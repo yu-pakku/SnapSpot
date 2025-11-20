@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('spot_tags', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger("spot_id");
             $table->unsignedBigInteger("tag_id");
+            $table->primary(['spot_id', 'tag_id']);
+            $table->foreign('spot_id')->references('id')->on('spots')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->timestamps();
         });
     }

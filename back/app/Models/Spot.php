@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Spot extends Model
 {
     protected $fillable = [
-        'image_url', 
+        'image_url',
         'address',
         'name',
         'lat',
