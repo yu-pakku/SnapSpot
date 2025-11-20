@@ -14,11 +14,20 @@ return new class extends Migration
         Schema::create('spots', function (Blueprint $table) {
             $table->id();
             $table->text("image_url");
-            $table->string("address");
-            $table->string("name");
             $table->double("lat",10,8);
             $table->double("lng",11,8);
-            $table->string("title");
+            $table->string("address_ja");
+            $table->string("address_en");
+            $table->string("address_zh");
+            $table->string("address_ko");
+            $table->string("name_ja");
+            $table->string("name_en");
+            $table->string("name_zh");
+            $table->string("name_ko");
+            $table->string("title_ja");
+            $table->string("title_en");
+            $table->string("title_zh");
+            $table->string("title_ko");
             $table->timestamps();
         });
     }

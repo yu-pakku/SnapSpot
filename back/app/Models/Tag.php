@@ -8,7 +8,8 @@ class Tag extends Model
 {
     protected $fillable = [
         'category_id',
-        'name'
+        'name',
+        'type'
         ];
 
     function spots() {
