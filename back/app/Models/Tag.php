@@ -15,8 +15,4 @@ class Tag extends Model
     function spots() {
         return $this->belongsToMany(Spot::class);
     }
-
-    function category() {
-        return $this->belongsTo(Category::class);
-    }
 }
