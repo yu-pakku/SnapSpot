@@ -1,4 +1,4 @@
-export default function Top() {
+export default function Post() {
   return (
     <main></main>
   )
