@@ -1,22 +1,118 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 白黒 */
+  --wihte: #FFFDFC;
+  --black: #252525;
+
+  /* グレー */
+  --gray-900: #484848;
+  --gray-800: #606060;
+  --gray-700: #777676;
+  --gray-600: #8D8D8D;
+  --gray-500: #A0A0A0;
+  --gray-400: #B4B3B3;
+  --gray-300: #CAC8C8;
+  --gray-200: #DEDEDE;
+  --gray-100: #F7F7F7;
+
+  /* キャッスルグリーン */
+  --castle-green-900: #0B2816;
+  --castle-green-800: #14331F;
+  --castle-green-700: #234931;
+  --castle-green-600: #2F5A3F;
+  --castle-green-500: #3F6B4F;
+  --castle-green-400: #5A8068;
+  --castle-green-300: #729D82;
+  --castle-green-200: #93C1A4;
+  --castle-green-100: #B4DCC2;
 }
 
-@theme inline {
+@layer utilities {
+  .Heading32 {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 40px;
+    letter-spacing: 0;
+  }
+  .Heading24 {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 34px;
+    letter-spacing: 0;
+  }
+  .Heading20 {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 28px;
+    letter-spacing: 0;
+  }
+  .Body16Bold {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 26px;
+    letter-spacing: 0;
+  }
+  .Body16Medium {
+    font-family: "Helvetica";
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 26px;
+    letter-spacing: 0;
+  }
+  .Body16Regular {
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 26px;
+    letter-spacing: 0;
+  }
+  .Body14Bold {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+  .Body14Medium {
+    font-family: "Helvetica";
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+  .Body14Regular {
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 0.875rem;
+    line-height: 22px;
+    letter-spacing: 0;
+  }
+  .Body12Medium {
+    font-family: "Helvetica";
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+  .Body12Regular {
+    font-family: "Helvetica";
+    font-weight: 300;
+    font-size: 0.75rem;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+}
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
