@@ -24,7 +24,7 @@ export function LangageMenu({
   isActive,
 }: LangageMenuProps) {
   return (
-    <>
+    <div className="relative flex flex-col gap-1">
       <button
         onClick={() => onSwitch(!isVisible)}
         className="flex gap-1 items-center cursor-pointer"
@@ -50,7 +50,13 @@ export function LangageMenu({
         </motion.div>
       </button>
       {isVisible && (
-        <ul>
+        <motion.ul
+          className="absolute flex flex-col gap-2 items-center top-8 w-24 bg-gray100 py-2 rounded-lg shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)]"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+        >
           {langages.map((lang, i) => {
             const isActiveIndex = isActive === i;
 
@@ -62,18 +68,16 @@ export function LangageMenu({
                   onLangChange(lang)
                 }}
                 className={`
-                  ${isActiveIndex 
-                    ? ""
-                    : ""
-                  }
+                  ${isActiveIndex && ""}
+                  Body12Medium text-black cursor-pointer
                 `}
               >
                 {lang}
               </li>
             );
           })}
-        </ul>
+        </motion.ul>
       )}
-    </>
+    </div>
   );
 };

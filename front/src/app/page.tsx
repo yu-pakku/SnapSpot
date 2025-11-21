@@ -15,10 +15,10 @@ export default function Top() {
 
   return (
     <main>
-      <div>
+      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400">
         {/* <Image 
           src="/assets/logo/logo.png"
-          alt="Snap Spot"
+          alt="SnapSpot"
           width={88}
           height={44}
         /> */}
