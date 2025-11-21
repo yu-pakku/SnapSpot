@@ -15,8 +15,8 @@ class TagController extends Controller
         ]);
 
         return response()->json([
-            "success" => true,
-            "data" => $tags,
+            "id" => $tags->id,
+            "message" =>"Tag created successfully"
         ]);
     }
 }
