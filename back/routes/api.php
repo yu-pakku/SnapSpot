@@ -12,3 +12,4 @@ Route::get('/user', function (Request $request) {
 Route::get('/spots', [SpotController::class, 'index']);
 Route::post('/spots', [SpotController::class, 'store']);
 Route::post('/tags', [TagController::class, 'store']);
+Route::get('/tags', [TagController::class, 'index']);
