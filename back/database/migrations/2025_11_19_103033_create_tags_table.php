@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("category_id");
-            $table->string("name");
+            $table->string("name_ja");
+            $table->string("name_en");
+            $table->string("name_zh");
+            $table->string("name_ko");
             $table->enum('type',['ja','en','zh','ko']);
             $table->timestamps();
         });
