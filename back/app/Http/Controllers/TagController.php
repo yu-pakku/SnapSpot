@@ -19,4 +19,24 @@ class TagController extends Controller
             "message" =>"Tag created successfully"
         ]);
     }
+
+    public function index(Request $request)
+    {
+        $tags = Tag::all()->map(function ($tag) {
+            return [
+                "id" => $tag->id,
+                "nameJa" => $tag->name_ja,
+                "nameEn" => $tag->name_en,
+                "nameZh" => $tag->name_zh,
+                "nameKo" => $tag->name_ko,
+                "type"=> $tag->type,
+            ];
+        });
+
+        return response()->json([
+            "data" => $tags,
+            "message" => "Tags retrieved successfully"
+        ]);
+    }
+
 }
