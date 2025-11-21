@@ -141,3 +141,7 @@ body {
   color: var(--black);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.masonry-column {
+  width: calc(50% - 24px) !important;
+}
