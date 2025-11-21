@@ -51,7 +51,7 @@ export function LangageMenu({
       </button>
       {isVisible && (
         <motion.ul
-          className="absolute flex flex-col gap-2 items-center top-8 w-24 bg-gray100 py-2 rounded-lg shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)]"
+          className="absolute flex flex-col gap-2 items-center top-8 w-24 bg-gray100 py-2 px-1 rounded-lg shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)]"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -68,8 +68,8 @@ export function LangageMenu({
                   onLangChange(lang)
                 }}
                 className={`
-                  ${isActiveIndex && ""}
-                  Body12Medium text-black cursor-pointer
+                  ${isActiveIndex && "bg-gray200"}
+                  w-full text-center py-1 rounded-sm Body14Medium text-black cursor-pointer
                 `}
               >
                 {lang}

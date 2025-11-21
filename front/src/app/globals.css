@@ -108,7 +108,7 @@
   }
 }
 
-@theme {
+@theme inline {
   /* 白黒 */
   --color-white: var(--white);
   --color-black: var(--black);
