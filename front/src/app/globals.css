@@ -2,7 +2,7 @@
 
 :root {
   /* 白黒 */
-  --wihte: #FFFDFC;
+  --white: #FFFDFC;
   --black: #252525;
 
   /* グレー */
@@ -17,15 +17,15 @@
   --gray-100: #F7F7F7;
 
   /* キャッスルグリーン */
-  --castle-green-900: #0B2816;
-  --castle-green-800: #14331F;
-  --castle-green-700: #234931;
-  --castle-green-600: #2F5A3F;
-  --castle-green-500: #3F6B4F;
-  --castle-green-400: #5A8068;
-  --castle-green-300: #729D82;
-  --castle-green-200: #93C1A4;
-  --castle-green-100: #B4DCC2;
+  --castle-green900: #0B2816;
+  --castle-green800: #14331F;
+  --castle-green700: #234931;
+  --castle-green600: #2F5A3F;
+  --castle-green500: #3F6B4F;
+  --castle-green400: #5A8068;
+  --castle-green300: #729D82;
+  --castle-green200: #93C1A4;
+  --castle-green100: #B4DCC2;
 }
 
 @layer utilities {
@@ -109,14 +109,35 @@
 }
 
 @theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* 白黒 */
+  --color-white: var(--white);
+  --color-black: var(--black);
+
+  /* グレー */
+  --color-gray900: var(--gray-900);
+  --color-gray800: var(--gray-800);
+  --color-gray700: var(--gray-700);
+  --color-gray600: var(--gray-600);
+  --color-gray500: var(--gray-500);
+  --color-gray400: var(--gray-400);
+  --color-gray300: var(--gray-300);
+  --color-gray200: var(--gray-200);
+  --color-gray100: var(--gray-100);
+
+  /* キャッスルグリーン */
+  --color-castle-green900: var(--castle-green900);
+  --color-castle-green800: var(--castle-green800);
+  --color-castle-green700: var(--castle-green700);
+  --color-castle-green600: var(--castle-green600);
+  --color-castle-green500: var(--castle-green500);
+  --color-castle-green400: var(--castle-green400);
+  --color-castle-green300: var(--castle-green300);
+  --color-castle-green200: var(--castle-green200);
+  --color-castle-green100: var(--castle-green100);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--white);
+  color: var(--black);
   font-family: Arial, Helvetica, sans-serif;
 }
