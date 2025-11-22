@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string("name_ja");
-            $table->string("name_en");
+            $table->string("name_en")->unique();
             $table->string("name_zh");
             $table->string("name_ko");
             $table->enum('type',['ja','en','zh','ko']);
