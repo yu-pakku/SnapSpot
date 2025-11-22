@@ -15,7 +15,7 @@ const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").the
 
 const mockTags = [
   {id: 1, name: "Next.js"},
-  {id: 2, name: "Lravel"}
+  {id: 2, name: "Laravel"}
 ]
 
 export default function Top() {
@@ -52,7 +52,7 @@ export default function Top() {
           {spots.map((spot, i) => (
             <div 
               key={i} 
-              className="mb-8 w-full"
+              className="mb-4 w-full"
               onClick={() => setIsBottomSheetOpen(true)}
             >
               {/* TODO: key属性に渡すのはspot.id */}
