@@ -21,6 +21,7 @@
     "@types/react-dom": "^19",
     "framer-motion": "^12.23.24",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vaul": "^1.1.2"
   }
 }
