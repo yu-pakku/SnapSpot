@@ -6,12 +6,17 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import Masonry from "react-masonry-css";
 import MockData from "@/data/mock-data.json";
-import { SpotCard } from "@/components/features/spot/";
+import { SpotCard, SpotSheetContent } from "@/components/features/spot/";
 import { Spot } from "@/types/spot/types";
 import { LangageMenu } from "@/components/shared";
 import { FiPlus } from "react-icons/fi";
 
 const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
+
+const mockTags = [
+  {id: 1, name: "Next.js"},
+  {id: 2, name: "Lravel"}
+]
 
 export default function Top() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -69,7 +74,15 @@ export default function Top() {
       <BottomSheet 
         isOpen={isBottomSheetOpen}
         onSwitch={setIsBottomSheetOpen}
-      />
+      >
+        <SpotSheetContent
+          imageSrc="/test-spot-image.jpg"
+          title="Breaking News!!"
+          name="Vantan 2F"
+          location="2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"
+          tags={mockTags}
+        />
+      </BottomSheet>
     </main>
   );
 }
