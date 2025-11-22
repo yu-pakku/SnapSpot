@@ -9,7 +9,11 @@ class Tag extends Model
     protected $fillable = [
         'category_id',
         'name',
-        'type'
+        'type',
+        'name_ja',
+        'name_en',
+        'name_zh',
+        'name_ko',
         ];
 
     function spots() {

@@ -41,7 +41,6 @@ class SpotController extends Controller
     public function store(Request $request)
     {
         $spot = Spot::create([
-            "id" => $request->id,
             "image_url" => $request->imageUrl,
             "lat" => $request->lat,
             "lng" => $request->lng,

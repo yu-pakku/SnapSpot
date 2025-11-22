@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string("title_en");
             $table->string("title_zh");
             $table->string("title_ko");
+            $table->enum('type',['ja','en','zh','ko']);
             $table->timestamps();
         });
     }
