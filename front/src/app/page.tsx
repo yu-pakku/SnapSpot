@@ -1,14 +1,25 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import Masonry from "react-masonry-css";
 import MockData from "@/data/mock-data.json";
-import { SpotCard } from "@/components/features/spot/";
+import { SpotCard, SpotSheetContent } from "@/components/features/spot/";
 import { Spot } from "@/types/spot/types";
 import { LangageMenu } from "@/components/shared";
+import { FiPlus } from "react-icons/fi";
+
+const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
+
+const mockTags = [
+  {id: 1, name: "Next.js"},
+  {id: 2, name: "Laravel"}
+]
 
 export default function Top() {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [langage, setLangage] = useState("English");
   const [isActiveLang, setIsActiveLang] = useState(0);
@@ -41,7 +52,8 @@ export default function Top() {
           {spots.map((spot, i) => (
             <div 
               key={i} 
-              className="mb-8 w-full"
+              className="mb-4 w-full"
+              onClick={() => setIsBottomSheetOpen(true)}
             >
               {/* TODO: key属性に渡すのはspot.id */}
               <SpotCard
@@ -51,9 +63,26 @@ export default function Top() {
           ))}
         </Masonry>
       </div>
-      <button>
-        
-      </button>
+      <Link href="/post">
+        <button className="fixed bottom-10 right-10 bg-castle-green200 p-4 rounded-full shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] cursor-pointer z-20">
+          <FiPlus
+            size={24}
+            color="white"
+          />
+        </button>
+      </Link>
+      <BottomSheet 
+        isOpen={isBottomSheetOpen}
+        onSwitch={setIsBottomSheetOpen}
+      >
+        <SpotSheetContent
+          imageSrc="/test-spot-image.jpg"
+          title="Breaking News!!"
+          name="Vantan 2F"
+          location="2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"
+          tags={mockTags}
+        />
+      </BottomSheet>
     </main>
   );
 }
