@@ -17,6 +17,6 @@ class Tag extends Model
         ];
 
     function spots() {
-        return $this->belongsToMany(Spot::class);
+        return $this->belongsToMany(Spot::class, 'spot_tags');
     }
 }

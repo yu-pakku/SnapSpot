@@ -12,39 +12,51 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "name" => "required|string",
-            "type" => "required|string",
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|in:ja,en,ko,zh',
         ]);
 
-        $name = $request->name;
-        $sourceLang = strtolower($request->type);
+        $name = trim($request->name);
+        $sourceLang = substr(strtolower($request->type), 0, 2);
 
         $translator = new Translator(env('DEEPL_API_KEY'));
 
+        // Build translations but avoid translating into the source language (use original)
         try {
-            $translated = [
-                "ja" => $translator->translateText($name, null, "JA")->text,
-                "en" => $translator->translateText($name, null, "EN-US")->text,
-                "ko" => $translator->translateText($name, null, "KO")->text,
-                "zh" => $translator->translateText($name, null, "ZH")->text,
-            ];
+            $translated = [];
+            $locales = ['ja' => 'JA', 'en' => 'EN-US', 'ko' => 'KO', 'zh' => 'ZH'];
+            foreach ($locales as $code => $deeplCode) {
+                if ($code === $sourceLang) {
+                    $translated[$code] = $name;
+                } else {
+                    $translated[$code] = $translator->translateText($name, null, $deeplCode)->text;
+                }
+            }
         } catch (\Exception $e) {
-            Log::error('DeepL translation failed', [
+            // Log and fallback: use original name for all languages to keep creation robust
+            Log::error('DeepL translation failed for Tag', [
                 'message' => $e->getMessage(),
                 'input' => $name,
             ]);
 
-            return response()->json([
-                'message' => 'Translation service unavailable',
-                'error' => $e->getMessage(),
-            ], 502);
+            $translated = [
+                'ja' => $name,
+                'en' => $name,
+                'ko' => $name,
+                'zh' => $name,
+            ];
         }
 
-        $exists = Tag::where("name_en", $translated["en"])->first();
+        // Check duplicate using the requested language column and type
+        $fieldMap = ['ja' => 'name_ja', 'en' => 'name_en', 'ko' => 'name_ko', 'zh' => 'name_zh'];
+        $checkField = $fieldMap[$sourceLang] ?? 'name_en';
+        $checkValue = $translated[$sourceLang] ?? $name;
+
+        $exists = Tag::where($checkField, $checkValue)->where('type', $sourceLang)->first();
         if ($exists) {
             return response()->json([
-                "id" => $exists->id,
-                "message" => "Tag already exists"
+                'id' => $exists->id,
+                'message' => 'Tag already exists'
             ], 200);
         }
 

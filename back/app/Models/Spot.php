@@ -10,6 +10,7 @@ class Spot extends Model
         'image_url',
         'lat',
         'lng',
+        'type',
         'address_ja',
         'address_en',
         'address_zh',
@@ -25,6 +26,6 @@ class Spot extends Model
         ];
 
     function tags() {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'spot_tags');
     }
 }
