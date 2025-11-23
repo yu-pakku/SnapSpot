@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import Loading from "../loading";
 import { IoIosArrowBack } from "react-icons/io";
@@ -169,8 +170,13 @@ export default function Map() {
         </div>
       )}
 
-      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-10">
-        <IoIosArrowBack size={32} color="black" />
+      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-20">
+        <Link href="/">
+          <IoIosArrowBack
+            size={32}
+            color="black"
+          />
+        </Link>
         <LangageMenu
           onSwitch={setIsDropdownVisible}
           onLangChange={setLangage}
