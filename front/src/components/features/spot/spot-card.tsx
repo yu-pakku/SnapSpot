@@ -8,7 +8,7 @@ export function SpotCard({ imageSrc, title, name }: SpotCardProps) {
   const [imgHeight, setImgHeight] = useState<number>(180);
 
   return (
-    <div className="flex flex-col gap-2 w-full relative" style={{ height: imgHeight }}>
+    <div className="flex flex-col gap-2 w-full relative cursor-pointer" style={{ height: imgHeight }}>
       <Image
         src={imageSrc}
         alt={`${imageSrc}-image`}
