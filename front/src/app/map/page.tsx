@@ -1,17 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRef, useEffect, useState } from "react";
 import Loading from "../loading";
 import { IoIosArrowBack } from "react-icons/io";
 import { LangageMenu } from "@/components/shared";
+import { SpotSheetContent } from "@/components/features/spot";
+import { Spot } from "@/types/spot/types";
+import { mockTags } from "../page";
 import mapboxgl from "mapbox-gl";
+
+const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
 
 export default function Map() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [langage, setLangage] = useState("English");
   const [isActiveLang, setIsActiveLang] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSpot, setSelectedSpot] = useState<Spot | null>(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const mapContainerRef = useRef(null);
 
@@ -147,6 +155,22 @@ export default function Map() {
             });
             mapRef.current.fitBounds(bounds, { padding: 50 });
           }
+
+          mapRef.current?.on("click", "spot-symbols", (e: mapboxgl.MapMouseEvent) => {
+            if (!mapRef.current) return;
+            const feature = e.features?.[0];
+            if (feature && feature.properties) {
+              setSelectedSpot({
+                id: feature.id ?? feature.properties.id ?? "unknown",
+                title: feature.properties.title,
+                name: feature.properties.name,
+                location: feature.properties.location,
+                imageSrc: feature.properties.imageSrc,
+                tags: feature.properties.tags ? (typeof feature.properties.tags === "string" ? JSON.parse(feature.properties.tags) : feature.properties.tags) : [],
+              });
+              setIsBottomSheetOpen(true);
+            }
+          });
         };
       });
 
@@ -191,6 +215,20 @@ export default function Map() {
         className="fixed top-14 left-0 w-full z-10"
         style={{ height: "calc(100vh - 56px)" }}
       />
+
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        onSwitch={setIsBottomSheetOpen}
+      >
+        <SpotSheetContent 
+          imageSrc={selectedSpot?.imageSrc || "/test-spot-image.jpg"}
+          title={selectedSpot?.title || "Breaking News!!"}
+          name={selectedSpot?.name || "Vantan 2F"}
+          location={selectedSpot?.location || "2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"}
+          tags={selectedSpot?.tags || mockTags}
+          isButtonHidden={true}
+        />
+      </BottomSheet>
     </main>
   );
 }

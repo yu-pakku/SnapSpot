@@ -6,14 +6,17 @@ import { FaRoute } from "react-icons/fa";
 import { Tag } from "@/components/features/tag"
 import { Button } from "@/components/shared";
 
-type SpotSheetContentProps = Pick<Spot, "imageSrc" | "title" | "name" | "location" | "tags">;
+type SpotSheetContentProps = Pick<Spot, "imageSrc" | "title" | "name" | "location" | "tags"> & {
+  isButtonHidden?: boolean;
+}
 
 export function SpotSheetContent({
   imageSrc,
   title,
   name,
   location,
-  tags
+  tags,
+  isButtonHidden
 }: SpotSheetContentProps) {
   return (
     <div className="flex flex-col gap-6">
@@ -40,7 +43,7 @@ export function SpotSheetContent({
           <FiMapPin size={20} />
           <span className="truncate block w-full">{location}</span>
         </p>
-        <div className="flex gap-3 mb-14">
+        <div className="flex gap-3">
           <h3 className="Body16Bold">
             Tags: 
           </h3>
@@ -52,13 +55,18 @@ export function SpotSheetContent({
             ))}
           </ul>
         </div>
-        <Link href="/map">
-          <Button
-            size="w-full"
-            text="Show route"
-            icon={<FaRoute size={16} color="white" />}
-          />
-        </Link>
+        {!isButtonHidden && (
+          <Link 
+            href="/map"
+            className="mt-14"
+          >
+            <Button
+              size="w-full"
+              text="Show route"
+              icon={<FaRoute size={16} color="white" />}
+            />
+          </Link>
+        )}
       </div>
     </div>
   )
