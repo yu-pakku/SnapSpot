@@ -11,6 +11,15 @@ import {
 } from "react-icons/fi";
 import { TbSend2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const BottomSheet = dynamic(
+  () =>
+    import("@/components/shared/bottom-sheet").then(
+      (mod) => mod.default
+    ),
+  { ssr: false }
+);
 
 export default function PostPage() {
   const router = useRouter();
@@ -21,40 +30,32 @@ export default function PostPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [showTagModal, setShowTagModal] = useState(false);
 
-  const allTags = ["oosu", "sakae", "banana", "ringo"];
+  const [showTagModal, setShowTagModal] = useState(false);
 
   const handleAddTag = () => {
     if (tagInput.trim() !== "" && !tags.includes(tagInput.trim())) {
-      setTags([...tags, tagInput.trim()]);
+      setTags((prev) => [...prev, tagInput.trim()]);
       setTagInput("");
     }
   };
 
-  const addTagFromModal = (tag: string) => {
-    if (!tags.includes(tag)) {
-      setTags([...tags, tag]);
-      setShowTagModal(false);
-    }
-  };
-
   const removeTag = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag));
+    setTags((prev) => prev.filter((t) => t !== tag));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
+    if (e.target.files?.[0]) setImage(e.target.files[0]);
   };
 
   return (
-    <div className="p-4 space-y-6 mx-6 relative">
-      {/* 戻るボタン & Google Map検索 */}
+    <div className="p-4 space-y-6 mx-6 relative pb-[47px]">
+
+
+      {/* Header */}
       <div className="flex justify-between items-center">
         <button className="text-2xl" onClick={() => router.push("/")}>
-          <FiChevronLeft />
+          <FiChevronLeft size={32} />
         </button>
 
         <button className="text-castle-green300 underline text-sm flex items-center gap-1">
@@ -63,8 +64,8 @@ export default function PostPage() {
         </button>
       </div>
 
-      {/* 画像アップロード */}
-      <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100">
+      {/* Image Upload */}
+      <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100 mb-8">
         <label className="cursor-pointer flex flex-col items-center">
           <FiUpload size={24} />
           <span>Choose an image</span>
@@ -81,7 +82,7 @@ export default function PostPage() {
       </div>
 
       {/* TITLE */}
-      <div>
+      <div className="mb-4">
         <label className="Body12Medium text-gray-800">
           TITLE <span className="text-red-500">*</span>
         </label>
@@ -90,12 +91,12 @@ export default function PostPage() {
           placeholder="A beautiful moment..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border border-gray-500 rounded-md p-2 mt-1 placeholder-gray-400 focus:outline-none focus:border-2 focus:border-castle-green300"
+          className="w-full border border-gray-500 rounded-md p-2 mt-1 placeholder-gray-400 focus:border-castle-green300 focus:outline-none"
         />
       </div>
 
       {/* SPOT NAME */}
-      <div>
+      <div className="mb-4">
         <label className="Body12Medium text-gray-800">
           SPOT NAME <span className="text-red-500">*</span>
         </label>
@@ -104,12 +105,12 @@ export default function PostPage() {
           placeholder="Cafe, Park..."
           value={spotName}
           onChange={(e) => setSpotName(e.target.value)}
-          className="w-full border border-gray-500 rounded-md p-2 mt-1 placeholder-gray-400 focus:outline-none focus:border-2 focus:border-castle-green300"
+          className="w-full border border-gray-500 rounded-md p-2 mt-1 focus:border-castle-green300 focus:outline-none"
         />
       </div>
 
       {/* LOCATION */}
-      <div>
+      <div className="mb-4">
         <label className="Body12Medium text-gray-800 flex items-center gap-1">
           <FiMapPin /> LOCATION
         </label>
@@ -119,7 +120,7 @@ export default function PostPage() {
             placeholder="123 Main St, City"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="flex-1 border border-gray-500 rounded-md p-2 placeholder-gray-400 focus:outline-none focus:border-2 focus:border-castle-green300"
+            className="flex-1 border border-gray-500 rounded-md p-2 focus:border-castle-green300 outline-none"
           />
           <button className="bg-castle-green200 rounded-lg w-11 h-11 flex items-center justify-center text-white">
             <FiMapPin size={20} />
@@ -128,20 +129,20 @@ export default function PostPage() {
       </div>
 
       {/* TAGS */}
-      <div>
+      <div className="mb-4">
         <label className="Body12Medium text-gray-800">
           # TAGS <span className="text-red-500">*</span>
         </label>
 
-        <div className="flex gap-2 mt-1">
+        <div className="flex gap-2">
           <div className="flex items-center flex-wrap gap-2 border border-gray-500 rounded-md p-2 flex-1 min-h-[48px]">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm gap-2"
+                className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm"
               >
                 {tag}
-                <button onClick={() => removeTag(tag)}>
+                <button onClick={() => removeTag(tag)} className="ml-2">
                   <FiX />
                 </button>
               </span>
@@ -150,18 +151,17 @@ export default function PostPage() {
             <input
               type="text"
               placeholder={tags.length === 0 ? "Search for a tag" : ""}
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
-              className="flex-1 min-w-[120px] outline-none"
+              value=""
               disabled
+              readOnly
+              className="flex-1 min-w-[120px] outline-none"
             />
+
           </div>
 
-          {/* ＋ボタン */}
           <button
             onClick={() => setShowTagModal(true)}
-            className="bg-castle-green200 rounded-lg w-11 h-11 flex items-center justify-center text-white shrink-0"
+            className="bg-castle-green200 w-11 h-11 rounded-lg flex items-center justify-center text-white"
           >
             <FiPlus size={20} />
           </button>
@@ -169,59 +169,89 @@ export default function PostPage() {
       </div>
 
       {/* POST BUTTON */}
-      <div className="mb-[47px]">
-        <button className="w-full bg-castle-green200 text-white py-3 rounded-lg mt-4 Body16Bold flex items-center justify-center gap-2">
+      <div className="mt-10">
+        <button className="w-full bg-castle-green200 text-white py-3 rounded-lg Body16Bold flex items-center justify-center gap-2">
           Post a spot
           <TbSend2 size={20} />
         </button>
       </div>
 
-      {/* MODAL */}
-      <div
-        className={`fixed z-50 bottom-0 left-0 right-0 transform transition-transform duration-300 ${showTagModal ? "translate-y-0" : "translate-y-full"
-          } bg-white border-t border-gray-200 rounded-t-2xl p-4 shadow-xl`}
-      >
-        <div className="w-full bg-white border-t border-gray-200 rounded-t-2xl p-4 shadow-xl">
-          <div className="w-10 h-1 bg-gray-400 mx-auto mb-4 rounded-full"></div>
+      {/* BOTTOM SHEET モーダル */}<BottomSheet isOpen={showTagModal} onSwitch={setShowTagModal}>
+        <div className="pb-4 h-[440px] overflow-y-auto px-[24px] ">
 
-          <label className="Body12Medium text-gray-800"># TAGS</label>
+          <label className="Body12Medium text-gray-800 mt-4 block">
+            # TAGS
+          </label>
 
-          {/* 選択済みタグ */}
-          <div className="flex gap-2 flex-wrap mt-3 mb-3">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm gap-2"
-              >
-                {tag}
-                <button onClick={() => removeTag(tag)}>
-                  <FiX />
-                </button>
-              </span>
-            ))}
+          {/* 選択済みタグ表示ボックス */}
+          <div className="border border-gray-400 bg-white rounded-md mt-2 px-3 py-2 min-h-[48px] flex items-center justify-between">
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm"
+                >
+                  {tag}
+                  <button onClick={() => removeTag(tag)} className="ml-2">
+                    <FiX />
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            {tags.length > 0 && (
+              <button className="text-black">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            )}
           </div>
 
-          {/* タグ入力 */}
-          <input
-            type="text"
-            placeholder="Type and press Enter to add a tag"
-            className="w-full border border-gray-500 rounded-md p-2 placeholder-gray-400 focus:outline-none focus:border-2 focus:border-green-600"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
-          />
+          {/* タグ入力フィールド（検索風） */}
+          <div className="relative mt-3">
+            <input
+              type="text"
+              placeholder="Search for a tag"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
+              className="w-full border-2 border-castle-green200 bg-white rounded-md pl-10 pr-4 py-2 focus:outline-none placeholder-gray-400"
+            />
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-castle-green300">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+                />
+              </svg>
+            </div>
+          </div>
 
           {/* 保存ボタン */}
           <button
             onClick={() => setShowTagModal(false)}
-            className="w-full bg-castle-green200 text-white py-3 rounded-full Body16Bold mt-4"
+            className="w-full bg-castle-green200 text-white py-3 rounded-lg Body16Bold mt-6"
           >
-            Save tags
+            Save a tags
           </button>
         </div>
-      </div>
+      </BottomSheet>
+
 
     </div>
   );
 }
-
