@@ -23,6 +23,7 @@
     "mapbox-gl": "^3.16.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zustand": "^5.0.8"
   }
 }
