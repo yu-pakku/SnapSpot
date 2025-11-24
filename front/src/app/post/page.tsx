@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import {
   FiMapPin,
@@ -16,7 +17,6 @@ import dynamic from "next/dynamic";
 import { useSpotStore } from "@/hooks/store/spot-store";
 import { useMutation } from "@tanstack/react-query";
 import { SpotStore } from "@/lib/api/spot-store";
-import { SpotStoreParams } from "@/types/spot/types";
 
 const BottomSheet = dynamic(
   () =>
@@ -37,10 +37,8 @@ export default function PostPage() {
   const [tagInput, setTagInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [coord, setCoord] = useState<{ lat: number; lng: number } | null>(null);
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
   const [showTagModal, setShowTagModal] = useState(false);
-  //   const [formValues, setFormValues] = useState<SpotStoreParams | null>({
-  //   imageFile: image
-  // });
 
   const mutation = useMutation({
     mutationFn: SpotStore,
@@ -60,6 +58,17 @@ export default function PostPage() {
   const removeTag = (tag: string) => {
     setTags((prev) => prev.filter((t) => t !== tag));
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewFile(reader.result as string);
+      };
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) setImage(e.target.files[0]);
@@ -112,21 +121,33 @@ export default function PostPage() {
       </div>
 
       {/* Image Upload */}
-      <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100 mb-8">
-        <label className="cursor-pointer flex flex-col items-center">
-          <FiUpload size={24} />
-          <span>Choose an image</span>
-          <input
-            type="file"
-            accept="image/*,video/mp4"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
-        </label>
-        <p className="text-xs mt-1 text-gray-500">
-          JPG under 20MB • MP4 under 200MB
-        </p>
-      </div>
+      {!previewFile && (
+        <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100 mb-8">
+          <label className="cursor-pointer flex flex-col items-center">
+            <FiUpload size={24} />
+            <span>Choose an image</span>
+            <input
+              type="file"
+              accept="image/*,video/mp4"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
+          <p className="text-xs mt-1 text-gray-500">
+            JPG under 20MB • MP4 under 200MB
+          </p>
+        </div>
+      )}
+
+      {previewFile && (
+        <Image 
+          src={previewFile}
+          alt="Preview"
+          width={312}
+          height={176}
+          className="rounded-lg"
+        />
+      )}
 
       {/* TITLE */}
       <div className="mb-4">

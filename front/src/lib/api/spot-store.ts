@@ -10,7 +10,7 @@ export interface SpotStoreResponse {
   message: string;
 }
 
-export async function SpotStore(req: SpotStoreRequest): Promise<SpotStoreResponse> {
+export async function SpotStore(req: FormData): Promise<SpotStoreResponse> {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/spots`;
   return axios
     .post<SpotStoreResponse>(apiUrl, req)
