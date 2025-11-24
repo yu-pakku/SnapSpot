@@ -1,102 +1,17 @@
 [
-  {
-    "imageFile": "/reo-reo.jpeg",
-    "title": "名古屋観光スポット",
-    "name": "名古屋城"
-  },
-  {
-    "imageFile": "/kojima.png",
-    "title": "名古屋観光スポット",
-    "name": "熱田神宮"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "オアシス21"
-  },
-  {
-    "imageFile": "/neoki.png",
-    "title": "名古屋観光スポット",
-    "name": "名古屋港水族館"
-  },
-  {
-    "imageFile": "/neoki.png",
-    "title": "名古屋観光スポット",
-    "name": "徳川美術館"
-  },
-  {
-    "imageFile": "/kojima.png",
-    "title": "名古屋観光スポット",
-    "name": "リニア・鉄道館"
-  },
-  {
-    "imageFile": "/neoki.png",
-    "title": "名古屋観光スポット",
-    "name": "名古屋市科学館"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "名古屋市美術館"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "ノリタケの森"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "東山動植物園"
-  },
-  {
-    "imageFile": "/kojima.png",
-    "title": "名古屋観光スポット",
-    "name": "大須観音"
-  },
-  {
-    "imageFile": "/neoki.png",
-    "title": "名古屋観光スポット",
-    "name": "白鳥庭園"
-  },
-  {
-    "imageFile": "/neoki.png",
-    "title": "名古屋観光スポット",
-    "name": "トヨタ産業技術記念館"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "久屋大通公園"
-  },
-  {
-    "imageFile": "/kojima.png",
-    "title": "名古屋観光スポット",
-    "name": "名古屋市役所本庁舎"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "名古屋テレビ塔"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "円頓寺商店街"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "名古屋市博物館"
-  },
-  {
-    "imageFile": "/test-spot-image.jpg",
-    "title": "名古屋観光スポット",
-    "name": "金シャチ横丁"
-  },
-  {
-    "imageFile": "/kojima.png",
-    "title": "名古屋観光スポット",
-    "name": "レゴランド・ジャパン"
-  }
+  { "imageFile": "/mock/oosu.webp", "title": "Must-see in Nagoya!", "name": "Osu Kannon" },
+  { "imageFile": "/mock/nagoya-castle.webp", "title": "Feel the history!", "name": "Nagoya Castle" },
+  { "imageFile": "/mock/nagoyakou-aquarium.jpeg", "title": "Fun for everyone!", "name": "Nagoya Port Aquarium" },
+  { "imageFile": "/mock/higashiyama-zoo.jpeg", "title": "Perfect for families!", "name": "Higashiyama Zoo & Botanical Gardens" },
+  { "imageFile": "/mock/nagoyashi-science-museum.jpg", "title": "Learn and discover!", "name": "Nagoya City Science Museum" },
+  { "imageFile": "/mock/nagoya-castle.webp", "title": "Feel the history!", "name": "Nagoya Castle" },
+  { "imageFile": "/mock/higashiyama-zoo.jpeg", "title": "Perfect for families!", "name": "Higashiyama Zoo & Botanical Gardens" },
+  { "imageFile": "/mock/nagoyakou-aquarium.jpeg", "title": "Fun for everyone!", "name": "Nagoya Port Aquarium" },
+  { "imageFile": "/mock/nagoyashi-science-museum.jpg", "title": "Learn and discover!", "name": "Nagoya City Science Museum" },
+  { "imageFile": "/mock/oosu.webp", "title": "Must-see in Nagoya!", "name": "Osu Kannon" },
+  { "imageFile": "/mock/nagoya-castle.webp", "title": "Feel the history!", "name": "Nagoya Castle" },
+  { "imageFile": "/mock/nagoyakou-aquarium.jpeg", "title": "Fun for everyone!", "name": "Nagoya Port Aquarium" },
+  { "imageFile": "/mock/higashiyama-zoo.jpeg", "title": "Perfect for families!", "name": "Higashiyama Zoo & Botanical Gardens" },
+  { "imageFile": "/mock/nagoyashi-science-museum.jpg", "title": "Learn and discover!", "name": "Nagoya City Science Museum" },
+  { "imageFile": "/mock/oosu.webp", "title": "Must-see in Nagoya!", "name": "Osu Kannon" }
 ]

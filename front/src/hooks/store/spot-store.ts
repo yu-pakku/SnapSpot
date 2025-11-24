@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Spot } from "@/types/spot/types";
+import { SpotStoreResponse } from "@/lib/api";
 
 interface SpotStore {
-  lastPostedSpot: Spot | null;
-  setLastPostedSpot: (spot: Spot) => void;
+  lastPostedSpot: SpotStoreResponse | null;
+  setLastPostedSpot: (spot: SpotStoreResponse) => void;
 }
 
 export const useSpotStore = create<SpotStore>((set) => ({

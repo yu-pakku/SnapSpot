@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import { useSpotStore } from "@/hooks/store/spot-store";
 import { useMutation } from "@tanstack/react-query";
 import { SpotStore } from "@/lib/api/spot-store";
+import { SpotStoreParams } from "@/types/spot/types";
 
 const BottomSheet = dynamic(
   () =>
@@ -37,10 +38,17 @@ export default function PostPage() {
   const [image, setImage] = useState<File | null>(null);
   const [coord, setCoord] = useState<{ lat: number; lng: number } | null>(null);
   const [showTagModal, setShowTagModal] = useState(false);
+  //   const [formValues, setFormValues] = useState<SpotStoreParams | null>({
+  //   imageFile: image
+  // });
 
   const mutation = useMutation({
-    mutationFn: 
-  })
+    mutationFn: SpotStore,
+    onSuccess: (spot) => {
+      useSpotStore.getState().setLastPostedSpot(spot);
+      router.push("/post/map?status=posted");
+    }
+  });
 
   const handleAddTag = () => {
     if (tagInput.trim() !== "" && !tags.includes(tagInput.trim())) {
@@ -75,7 +83,7 @@ export default function PostPage() {
           JSON.stringify({ lat, lng })
         );
         
-        router.push("/post/map?status=posted");
+
       } else {
         setCoord(null);
       }

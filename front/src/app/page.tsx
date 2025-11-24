@@ -14,8 +14,8 @@ import { FiPlus } from "react-icons/fi";
 const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
 
 export const mockTags = [
-  {id: 1, name: "Next.js"},
-  {id: 2, name: "Laravel"}
+  {id: 1, name: "Japan"},
+  {id: 2, name: "Nagoya"}
 ]
 
 export default function Top() {
@@ -28,13 +28,12 @@ export default function Top() {
   return (
     <main>
       <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-10">
-        {/* <Image 
-          src="/assets/logo/logo.png"
+        <Image 
+          src="/logo.png"
           alt="SnapSpot" 
           width={88}
           height={44}
-        /> */}
-        ここにロゴが入ります
+        />
         <LangageMenu 
           onSwitch={setIsDropdownVisible}
           onLangChange={setLangage}
@@ -76,10 +75,10 @@ export default function Top() {
         onSwitch={setIsBottomSheetOpen}
       >
         <SpotSheetContent
-          imageFile="/test-spot-image.jpg"
-          title="Breaking News!!"
-          name="Vantan 2F"
-          location="2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"
+          imageFile="/mock/nagoya-castle.webp"
+          title="Feel the history!"
+          name="Nagoya Castle"
+          address="1-1 Honmaru, Naka Ward, Nagoya City, Aichi Prefecture"
           tags={mockTags}
         />
       </BottomSheet>
