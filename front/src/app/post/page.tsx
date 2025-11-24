@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useSpotStore } from "@/hooks/store/spot-store";
 import { useMutation } from "@tanstack/react-query";
-import { SpotStore } from "@/lib/api/spot-store";
+import { SpotStore } from "@/lib/api/spot/spot-store";
 import { Tag } from "@/types/spot/types";
 
 const BottomSheet = dynamic(

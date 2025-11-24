@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SpotStoreResponse } from "@/lib/api";
+import { SpotStoreResponse } from "@/lib/api/spot";
 
 interface SpotStore {
   lastPostedSpot: SpotStoreResponse | null;
