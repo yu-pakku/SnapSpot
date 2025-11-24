@@ -2,16 +2,16 @@ import { Spot } from "@/types/spot/types";
 import { useState } from "react";
 import Image from "next/image";
 
-type SpotCardProps = Pick<Spot, "imageSrc" | "title" | "name">;
+type SpotCardProps = Pick<Spot, "imageFile" | "title" | "name">;
 
-export function SpotCard({ imageSrc, title, name }: SpotCardProps) {
+export function SpotCard({ imageFile, title, name }: SpotCardProps) {
   const [imgHeight, setImgHeight] = useState<number>(180);
 
   return (
     <div className="flex flex-col gap-2 w-full relative cursor-pointer" style={{ height: imgHeight }}>
       <Image
-        src={imageSrc}
-        alt={`${imageSrc}-image`}
+        src={imageFile}
+        alt={`${imageFile}-image`}
         width={180}
         height={imgHeight}
         className="relative rounded-lg shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-0"

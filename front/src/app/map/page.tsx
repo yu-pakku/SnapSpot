@@ -165,7 +165,7 @@ export default function Map() {
                 title: feature.properties.title,
                 name: feature.properties.name,
                 location: feature.properties.location,
-                imageSrc: feature.properties.imageSrc,
+                imageFile: feature.properties.imageFile,
                 tags: feature.properties.tags ? (typeof feature.properties.tags === "string" ? JSON.parse(feature.properties.tags) : feature.properties.tags) : [],
               });
               setIsBottomSheetOpen(true);
@@ -221,7 +221,7 @@ export default function Map() {
         onSwitch={setIsBottomSheetOpen}
       >
         <SpotSheetContent 
-          imageSrc={selectedSpot?.imageSrc || "/test-spot-image.jpg"}
+          imageFile={selectedSpot?.imageFile || "/test-spot-image.jpg"}
           title={selectedSpot?.title || "Breaking News!!"}
           name={selectedSpot?.name || "Vantan 2F"}
           location={selectedSpot?.location || "2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"}

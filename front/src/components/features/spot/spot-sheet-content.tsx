@@ -6,15 +6,15 @@ import { FaRoute } from "react-icons/fa";
 import { Tag } from "@/components/features/tag"
 import { Button } from "@/components/shared";
 
-type SpotSheetContentProps = Pick<Spot, "imageSrc" | "title" | "name" | "location" | "tags"> & {
+type SpotSheetContentProps = Pick<Spot, "imageFile" | "title" | "name" | "address" | "tags"> & {
   isButtonHidden?: boolean;
 }
 
 export function SpotSheetContent({
-  imageSrc,
+  imageFile,
   title,
   name,
-  location,
+  address,
   tags,
   isButtonHidden
 }: SpotSheetContentProps) {
@@ -22,8 +22,8 @@ export function SpotSheetContent({
     <div className="flex flex-col gap-6">
       <div className="relative">
         <Image
-          src={imageSrc}
-          alt={`${imageSrc}-image`}
+          src={imageFile}
+          alt={`${imageFile}-image`}
           width={345}
           height={188}
           className="w-full h-47 rounded-lg object-cover"
@@ -41,7 +41,7 @@ export function SpotSheetContent({
       <div className="flex flex-col gap-6 w-full py-6 border-t-[0.5px] border-gray400 text-black">
         <p className="flex items-center gap-2">
           <FiMapPin size={20} />
-          <span className="truncate block w-full">{location}</span>
+          <span className="truncate block w-full">{address}</span>
         </p>
         <div className="flex gap-3">
           <h3 className="Body16Bold">

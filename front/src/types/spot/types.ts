@@ -1,9 +1,9 @@
 export interface Spot {
   id: number;
-  imageSrc: string;
+  imageFile: string;
   title: string;
   name: string;
-  location: string;
+  address: string;
   tags: Tag[];
 }
 

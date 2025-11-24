@@ -76,7 +76,7 @@ export default function Top() {
         onSwitch={setIsBottomSheetOpen}
       >
         <SpotSheetContent
-          imageSrc="/test-spot-image.jpg"
+          imageFile="/test-spot-image.jpg"
           title="Breaking News!!"
           name="Vantan 2F"
           location="2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"
