@@ -13,7 +13,7 @@ import { FiPlus } from "react-icons/fi";
 
 const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
 
-const mockTags = [
+export const mockTags = [
   {id: 1, name: "Next.js"},
   {id: 2, name: "Laravel"}
 ]
