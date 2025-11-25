@@ -43,19 +43,21 @@ export default function PostPage() {
 
   const mutation = useMutation({
     mutationFn: SpotStore,
-    onSuccess: (spot) => {
-      useSpotStore.getState().setLastPostedSpot(spot);
+    onSuccess: (spotResponse) => {
+      // 投稿時のリクエスト内容を保存
+      const lastSpot = {
+        id: spotResponse.id,
+        imageFile: previewFile ?? "",
+        title,
+        name,
+        address,
+        tags,
+        message: spotResponse.message,
+      };
+      useSpotStore.getState().setLastPostedSpot(lastSpot);
+      setLastPostedSpot(lastSpot);
       router.push("/post/map?status=posted");
     },
-    onError: (error) => {
-      // バリデーションエラー詳細を出力
-      if (typeof error === "object" && error !== null && "response" in error) {
-        // @ts-ignore
-        console.log(error.response?.data || error);
-      } else {
-        console.log(error);
-      }
-    }
   });
 
   const handleAddTag = (tag: Tag) => {
@@ -100,24 +102,31 @@ export default function PostPage() {
 
     try {
       const coord = await latitudeConversion();
+
       if (!coord) {
         alert("住所から座標が取得できません。正しい住所を入力してください。");
         return;
       }
+      
       const formData = new FormData();
       formData.append("title", title);
       formData.append("name", name);
       formData.append("address", address);
+
       const type = localStorage.getItem("currentLangage") ?? "";
       formData.append("type", type);
+
       if (selectedFile) {
         formData.append("imageFile", selectedFile);
       }
+
       tags.forEach(tag => {
         formData.append("tags[]", String(tag.id));
       });
+
       formData.append("lat", String(coord.lat));
       formData.append("lng", String(coord.lng));
+
       mutation.mutate(formData);
     } catch (error) {
       console.error("スポットの投稿に失敗しました: ", error);

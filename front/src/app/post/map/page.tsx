@@ -7,10 +7,12 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl from "mapbox-gl"
 import { FiChevronLeft } from "react-icons/fi";
 import { SpotSheetContent } from "@/components/features/spot";
+import { useSpotStore } from "@/hooks/store/spot-store";
 
 const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
 
 export default function Map() {
+  const lastPostedSpot = useSpotStore((state) => state.lastPostedSpot);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const mapContainerRef = useRef(null);
@@ -32,13 +34,24 @@ export default function Map() {
     }
   })
 
+  useEffect(() => {
+    setIsBottomSheetOpen(true);
+    console.log(lastPostedSpot);
+  }, [])
+
   return (
     <main>
-      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-20">
+      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-50">
         <Link href="/">
           <FiChevronLeft size={32} />
         </Link>
       </div>
+
+      {isPosted && (
+        <div className="relative top-25 flex items-center justify-center w-80 h-14 rounded-sm bg-castle-green200 mx-auto Heading20 text-white shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-50">
+          <h1>Registration complete!</h1>
+        </div>
+      )}
 
       <div
         ref={mapContainerRef}
@@ -48,14 +61,22 @@ export default function Map() {
 
       {isPosted ? (
         <div>
-          {/* <BottomSheet
+          <BottomSheet
             isOpen={isBottomSheetOpen}
             onSwitch={setIsBottomSheetOpen}
+            isPosted={true}
           >
-            <SpotSheetContent 
-
-            />
-          </BottomSheet> */}
+            {lastPostedSpot && (
+              <SpotSheetContent
+                imageFile={lastPostedSpot.imageFile}
+                title={lastPostedSpot.title}
+                name={lastPostedSpot.name}
+                address={lastPostedSpot.address}
+                tags={lastPostedSpot.tags}
+                isButtonHidden={true}
+              />
+            )}
+          </BottomSheet>
         </div>
       ) : (
         <div></div>
