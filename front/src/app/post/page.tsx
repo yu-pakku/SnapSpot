@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import {
   FiMapPin,
@@ -12,6 +14,10 @@ import {
 import { TbSend2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { useSpotStore } from "@/hooks/store/spot-store";
+import { useMutation } from "@tanstack/react-query";
+import { SpotStore } from "@/lib/api/spot/spot-store";
+import { Tag } from "@/types/spot/types";
 
 const BottomSheet = dynamic(
   () =>
@@ -24,29 +30,106 @@ const BottomSheet = dynamic(
 export default function PostPage() {
   const router = useRouter();
 
+  const setLastPostedSpot = useSpotStore((state) => state.setLastPostedSpot);
   const [title, setTitle] = useState("");
-  const [spotName, setSpotName] = useState("");
-  const [location, setLocation] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [name, setName] = useState("");
+  const [address, setaddress] = useState("");
+  const [tags, setTags] = useState<Tag[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showTagModal, setShowTagModal] = useState(false);
 
-  const handleAddTag = () => {
-    if (tagInput.trim() !== "" && !tags.includes(tagInput.trim())) {
-      setTags((prev) => [...prev, tagInput.trim()]);
-      setTagInput("");
-    }
+  const mutation = useMutation({
+    mutationFn: SpotStore,
+    onSuccess: (spotResponse) => {
+      const lastSpot = {
+        id: spotResponse.id,
+        imageFile: previewFile ?? "",
+        title,
+        name,
+        address,
+        tags,
+        message: spotResponse.message,
+      };
+      useSpotStore.getState().setLastPostedSpot(lastSpot);
+      setLastPostedSpot(lastSpot);
+      router.push("/post/map?status=posted");
+    },
+  });
+
+  const handleAddTag = (tag: Tag) => {
+    setTags((prev) => [...prev, tag]);
   };
 
-  const removeTag = (tag: string) => {
+  const removeTag = (tag: Tag) => {
     setTags((prev) => prev.filter((t) => t !== tag));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) setImage(e.target.files[0]);
-  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewFile(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const latitudeConversion = async () => {
+    try {
+      const res = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
+      );
+      const data = await res.json();
+      if (data.features?.length > 0) {
+        const [lng, lat] = data.features[0].center;
+        return { lat, lng };
+      }
+      return null;
+    } catch (error) {
+      console.error("経度と緯度の取得に失敗しました: ", error);
+      return null;
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const coord = await latitudeConversion();
+
+      if (!coord) {
+        alert("住所から座標が取得できません。正しい住所を入力してください。");
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("name", name);
+      formData.append("address", address);
+
+      const type = localStorage.getItem("currentLangage") ?? "";
+      formData.append("type", type);
+
+      if (selectedFile) {
+        formData.append("imageFile", selectedFile);
+      }
+
+      tags.forEach(tag => {
+        formData.append("tags[]", String(tag.id));
+      });
+
+      formData.append("lat", String(coord.lat));
+      formData.append("lng", String(coord.lng));
+
+      mutation.mutate(formData);
+    } catch (error) {
+      console.error("スポットの投稿に失敗しました: ", error);
+    }
+  }
 
   return (
     <div className="p-4 space-y-6 mx-6 relative pb-[47px]">
@@ -58,28 +141,43 @@ export default function PostPage() {
           <FiChevronLeft size={32} />
         </button>
 
-        <button className="text-castle-green300 underline text-sm flex items-center gap-1">
+        <Link 
+          href="/post/map"
+          className="text-castle-green300 underline text-sm flex items-center gap-1"
+        >
           <FiRepeat size={14} />
           Search on Google Maps
-        </button>
+        </Link>
       </div>
 
       {/* Image Upload */}
-      <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100 mb-8">
-        <label className="cursor-pointer flex flex-col items-center">
-          <FiUpload size={24} />
-          <span>Choose an image</span>
-          <input
-            type="file"
-            accept="image/*,video/mp4"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
-        </label>
-        <p className="text-xs mt-1 text-gray-500">
-          JPG under 20MB • MP4 under 200MB
-        </p>
-      </div>
+      {!previewFile && (
+        <div className="border-dashed border-2 border-gray-500 rounded-lg h-44 flex flex-col justify-center items-center text-black bg-gray-100 mb-8">
+          <label className="cursor-pointer flex flex-col items-center">
+            <FiUpload size={24} />
+            <span>Choose an image</span>
+            <input
+              type="file"
+              accept="image/*,video/mp4"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
+          <p className="text-xs mt-1 text-gray-500">
+            JPG under 20MB • MP4 under 200MB
+          </p>
+        </div>
+      )}
+
+      {previewFile && (
+        <Image 
+          src={previewFile}
+          alt="Preview"
+          width={312}
+          height={176}
+          className="rounded-lg"
+        />
+      )}
 
       {/* TITLE */}
       <div className="mb-4">
@@ -103,23 +201,23 @@ export default function PostPage() {
         <input
           type="text"
           placeholder="Cafe, Park..."
-          value={spotName}
-          onChange={(e) => setSpotName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="w-full border border-gray-500 rounded-md p-2 mt-1 focus:border-castle-green300 focus:outline-none"
         />
       </div>
 
-      {/* LOCATION */}
+      {/* address */}
       <div className="mb-4">
         <label className="Body12Medium text-gray-800 flex items-center gap-1">
-          <FiMapPin /> LOCATION
+          <FiMapPin /> address
         </label>
         <div className="flex gap-2 mt-1">
           <input
             type="text"
             placeholder="123 Main St, City"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
             className="flex-1 border border-gray-500 rounded-md p-2 focus:border-castle-green300 outline-none"
           />
           <button className="bg-castle-green200 rounded-lg w-11 h-11 flex items-center justify-center text-white">
@@ -135,13 +233,13 @@ export default function PostPage() {
         </label>
 
         <div className="flex gap-2">
-          <div className="flex items-center flex-wrap gap-2 border border-gray-500 rounded-md p-2 flex-1 min-h-[48px]">
-            {tags.map((tag) => (
+          <div className="flex items-center flex-wrap gap-2 border border-gray-500 rounded-md p-2 flex-1 min-h-12">
+            {tags.map((tag, i) => (
               <span
-                key={tag}
-                className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm"
+                key={i}
+                className="flex items-center bg-castle-green500 text-white px-3 py-1 rounded-full text-sm"
               >
-                {tag}
+                {tag.name}
                 <button onClick={() => removeTag(tag)} className="ml-2">
                   <FiX />
                 </button>
@@ -170,28 +268,31 @@ export default function PostPage() {
 
       {/* POST BUTTON */}
       <div className="mt-10">
-        <button className="w-full bg-castle-green200 text-white py-3 rounded-lg Body16Bold flex items-center justify-center gap-2">
+        <button 
+          className="w-full bg-castle-green200 text-white py-3 rounded-lg Body16Bold flex items-center justify-center gap-2"
+          onClick={(e) => handleSubmit(e)}
+        >
           Post a spot
           <TbSend2 size={20} />
         </button>
       </div>
 
       {/* BOTTOM SHEET モーダル */}<BottomSheet isOpen={showTagModal} onSwitch={setShowTagModal}>
-        <div className="pb-4 h-[440px] overflow-y-auto px-[24px] ">
+        <div className="pb-4 h-[440px] overflow-y-auto px-6 ">
 
           <label className="Body12Medium text-gray-800 mt-4 block">
             # TAGS
           </label>
 
           {/* 選択済みタグ表示ボックス */}
-          <div className="border border-gray-400 bg-white rounded-md mt-2 px-3 py-2 min-h-[48px] flex items-center justify-between">
+          <div className="border border-gray-400 bg-white rounded-md mt-2 px-3 py-2 min-h-12 flex items-center justify-between">
             <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {tags.map((tag, i) => (
                 <span
-                  key={tag}
-                  className="flex items-center bg-red-500 text-white px-3 py-1 rounded-full text-sm"
+                  key={i}
+                  className="flex items-center bg-castle-green500 text-white px-3 py-1 rounded-full text-sm"
                 >
-                  {tag}
+                  {tag.name}
                   <button onClick={() => removeTag(tag)} className="ml-2">
                     <FiX />
                   </button>
@@ -221,7 +322,12 @@ export default function PostPage() {
               placeholder="Search for a tag"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && tagInput.trim()) {
+                  handleAddTag({ id: Date.now(), name: tagInput.trim() });
+                  setTagInput("");
+                }
+              }}
               className="w-full border-2 border-castle-green200 bg-white rounded-md pl-10 pr-4 py-2 focus:outline-none placeholder-gray-400"
             />
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-castle-green300">
@@ -250,7 +356,6 @@ export default function PostPage() {
           </button>
         </div>
       </BottomSheet>
-
 
     </div>
   );

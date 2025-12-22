@@ -164,8 +164,8 @@ export default function Map() {
                 id: feature.id ?? feature.properties.id ?? "unknown",
                 title: feature.properties.title,
                 name: feature.properties.name,
-                location: feature.properties.location,
-                imageSrc: feature.properties.imageSrc,
+                address: feature.properties.location,
+                imageFile: feature.properties.imageFile,
                 tags: feature.properties.tags ? (typeof feature.properties.tags === "string" ? JSON.parse(feature.properties.tags) : feature.properties.tags) : [],
               });
               setIsBottomSheetOpen(true);
@@ -216,17 +216,16 @@ export default function Map() {
         style={{ height: "calc(100vh - 56px)" }}
       />
 
-      <BottomSheet
+      <BottomSheet 
         isOpen={isBottomSheetOpen}
         onSwitch={setIsBottomSheetOpen}
       >
-        <SpotSheetContent 
-          imageSrc={selectedSpot?.imageSrc || "/test-spot-image.jpg"}
-          title={selectedSpot?.title || "Breaking News!!"}
-          name={selectedSpot?.name || "Vantan 2F"}
-          location={selectedSpot?.location || "2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"}
-          tags={selectedSpot?.tags || mockTags}
-          isButtonHidden={true}
+        <SpotSheetContent
+          imageFile="/mock/nagoya-castle.webp"
+          title="Feel the history!"
+          name="Nagoya Castle"
+          address="1-1 Honmaru, Naka Ward, Nagoya City, Aichi Prefecture"
+          tags={mockTags}
         />
       </BottomSheet>
     </main>

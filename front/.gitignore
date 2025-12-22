@@ -40,7 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-test-spot-image.jpg
-kojima.png
-neoki.png
-reo-reo.jpeg
+/public/mock

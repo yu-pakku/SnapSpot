@@ -3,41 +3,54 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Masonry from "react-masonry-css";
 import MockData from "@/data/mock-data.json";
 import { SpotCard, SpotSheetContent } from "@/components/features/spot/";
 import { Spot } from "@/types/spot/types";
 import { LangageMenu } from "@/components/shared";
 import { FiPlus } from "react-icons/fi";
+import { useMutation } from "@tanstack/react-query";
+import { Spots } from "@/lib/api/spot";
 
 const BottomSheet = dynamic(() => import("@/components/shared/bottom-sheet").then(mod => mod.default), { ssr: false });
 
 export const mockTags = [
-  {id: 1, name: "Next.js"},
-  {id: 2, name: "Laravel"}
+  {id: 1, name: "Japan"},
+  {id: 2, name: "Nagoya"}
 ]
 
 export default function Top() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [langage, setLangage] = useState("English");
+  const [langage, setLangage] = useState<"ja" | "en" | "zh" | "ko">("en");
   const [isActiveLang, setIsActiveLang] = useState(0);
+  // const [spots, setSpots] = useState<Spot[]>([]);
   const spots = MockData as Spot[];
+
+  // const mutation = useMutation
+  //   mutationFn: Spots,
+  //   onSuccess: (spotsResponse) => {
+  //     setSpots(spotsResponse.data);
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   mutation.mutate({ type: langage });
+  // }, [langage]);
 
   return (
     <main>
-      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-10">
-        {/* <Image 
-          src="/assets/logo/logo.png"
+      <div className="fixed flex top-0 left-0 bg-white w-screen h-14 items-center justify-between px-5 border-b-[0.5px] border-gray400 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.25)] z-20">
+        <Image 
+          src="/logo.png"
           alt="SnapSpot" 
           width={88}
           height={44}
-        /> */}
-        ここにロゴが入ります
+        />
         <LangageMenu 
           onSwitch={setIsDropdownVisible}
-          onLangChange={setLangage}
+          onLangChange={(lang: string) => setLangage(lang as "ja" | "en" | "zh" | "ko")}
           onActive={setIsActiveLang}
           isVisible={isDropdownVisible}
           isActive={isActiveLang}
@@ -76,10 +89,10 @@ export default function Top() {
         onSwitch={setIsBottomSheetOpen}
       >
         <SpotSheetContent
-          imageSrc="/test-spot-image.jpg"
-          title="Breaking News!!"
-          name="Vantan 2F"
-          location="2-14 Taiko 3-chome, Nakamura Ward, Nagoya City, Aichi Prefecture"
+          imageFile="/mock/nagoya-castle.webp"
+          title="Feel the history!"
+          name="Nagoya Castle"
+          address="1-1 Honmaru, Naka Ward, Nagoya City, Aichi Prefecture"
           tags={mockTags}
         />
       </BottomSheet>
