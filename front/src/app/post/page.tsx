@@ -36,7 +36,6 @@ export default function PostPage() {
   const [address, setaddress] = useState("");
   const [tags, setTags] = useState<Tag[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [coord, setCoord] = useState<{ lat: number; lng: number } | null>(null);
   const [previewFile, setPreviewFile] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showTagModal, setShowTagModal] = useState(false);
@@ -44,7 +43,6 @@ export default function PostPage() {
   const mutation = useMutation({
     mutationFn: SpotStore,
     onSuccess: (spotResponse) => {
-      // 投稿時のリクエスト内容を保存
       const lastSpot = {
         id: spotResponse.id,
         imageFile: previewFile ?? "",

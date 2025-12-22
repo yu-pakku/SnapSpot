@@ -7,6 +7,8 @@ type SpotCardProps = Pick<Spot, "imageFile" | "title" | "name">;
 export function SpotCard({ imageFile, title, name }: SpotCardProps) {
   const [imgHeight, setImgHeight] = useState<number>(180);
 
+  console.log(imageFile);
+
   return (
     <div className="flex flex-col gap-2 w-full cursor-pointer">
       <div className="relative">
